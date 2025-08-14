@@ -28,10 +28,10 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Compute image name (lowercase owner)
+      - name: Compute image name (lowercase owner from GITHUB_REPOSITORY)
         run: |
-          echo "IMAGE_OWNER=$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
-          echo "IMAGE_NAME=${IMAGE_OWNER}/github_connector" >> $GITHUB_ENV
+          OWNER=$(echo "$GITHUB_REPOSITORY" | cut -d'/' -f1 | tr '[:upper:]' '[:lower:]')
+          echo "IMAGE_NAME=${OWNER}/github_connector" >> $GITHUB_ENV
 
       - name: Build and push
         uses: docker/build-push-action@v6
