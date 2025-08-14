@@ -28,10 +28,11 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Compute image name (lowercase owner from GITHUB_REPOSITORY)
+      - name: Compute image meta
+        id: meta
         run: |
           OWNER=$(echo "$GITHUB_REPOSITORY" | cut -d'/' -f1 | tr '[:upper:]' '[:lower:]')
-          echo "IMAGE_NAME=${OWNER}/github_connector" >> $GITHUB_ENV
+          echo "image_name=${OWNER}/github_connector" >> $GITHUB_OUTPUT
 
       - name: Build and push
         uses: docker/build-push-action@v6
@@ -40,6 +41,6 @@ jobs:
           file: Dockerfile
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+            ${{ env.REGISTRY }}/${{ steps.meta.outputs.image_name }}:latest
+            ${{ env.REGISTRY }}/${{ steps.meta.outputs.image_name }}:${{ github.sha }}
           provenance: false
