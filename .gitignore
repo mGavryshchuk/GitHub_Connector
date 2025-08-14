@@ -1,0 +1,14 @@
+# General
+.DS_Store
+.env
+.env.*
+.vscode/
+.idea/
+node_modules/
+venv/
+__pycache__/
+*.pyc
+*.log
+coverage/
+dist/
+build/
