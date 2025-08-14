@@ -1,0 +1,17 @@
+version: "3.9"
+
+services:
+  connector:
+    image: ghcr.io/mgavryshchuk/github_connector:latest
+    container_name: gh-connector
+    env_file:
+      - .env
+    ports:
+      - "${HOST_PORT:-8777}:8080"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8080/openapi.json >/dev/null 2>&1 || exit 1"]
+      interval: 30s
+      timeout: 5s
+      start_period: 10s
+      retries: 3
