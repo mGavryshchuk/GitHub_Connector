@@ -1,5 +1,6 @@
 from typing import Any, Dict, List, Optional
 from fastapi import FastAPI, HTTPException, Path, Query
+from fastapi.openapi.utils import get_openapi
 from pydantic import BaseModel
 
 from .config import settings
@@ -26,6 +27,28 @@ class CreateCommentRequest(BaseModel):
 
 
 app = FastAPI(title='GitHub Connector API', version='0.1.0')
+
+
+def custom_openapi():
+    if app.openapi_schema:
+        return app.openapi_schema
+    
+    # Load from static openapi.yaml file
+    import yaml
+    import os
+    
+    openapi_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'openapi.yaml')
+    with open(openapi_path, 'r') as f:
+        openapi_schema = yaml.safe_load(f)
+    
+    # Override with dynamic routes
+    openapi_schema["servers"] = [{"url": "/"}]
+    
+    app.openapi_schema = openapi_schema
+    return app.openapi_schema
+
+
+app.openapi = custom_openapi
 
 
 def ensure_allowed(owner: str, repo: str) -> None:

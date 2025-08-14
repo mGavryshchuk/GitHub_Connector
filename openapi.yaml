@@ -4,7 +4,7 @@ info:
   version: 0.1.0
   description: REST bridge to list, get, create, update issues and manage comments via GitHub API
 servers:
-  - url: http://localhost:8080
+  - url: /
 paths:
   /repos/{owner}/{repo}/issues:
     get:
