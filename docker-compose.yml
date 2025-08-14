@@ -1,0 +1,20 @@
+version: "3.9"
+
+services:
+  connector:
+    container_name: gh-connector
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: gh-connector:local
+    env_file:
+      - .env
+    ports:
+      - "${HOST_PORT:-8080}:8080"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8080/openapi.json >/dev/null 2>&1 || exit 1"]
+      interval: 30s
+      timeout: 5s
+      start_period: 10s
+      retries: 3

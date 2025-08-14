@@ -6,6 +6,7 @@ Legend
 - [x] Done (implemented and verified locally)
 - [ ] Todo / Pending
 - (In Review) Implemented; awaiting review/feedback on the board
+- (In Progress) Currently under active development
 
 ## Milestone: Foundation
 - [x] Architecture: Design and document system architecture — see [docs/ARCHITECTURE.md](./ARCHITECTURE.md)
@@ -18,11 +19,11 @@ Legend
 - [x] Implement list issues endpoint (GET `/repos/{owner}/{repo}/issues`) — E2E verified
 - (In Review) Implement get single issue endpoint (GET `/repos/{owner}/{repo}/issues/{issue_number}`)
 - (In Review) Implement create issue endpoint (POST `/repos/{owner}/{repo}/issues`)
-- [ ] Implement update/close issue endpoint (PATCH `/repos/{owner}/{repo}/issues/{issue_number}`)
+- (In Review) Implement update/close issue endpoint (PATCH `/repos/{owner}/{repo}/issues/{issue_number}`)
 - (In Review) Implement list comments endpoint (GET `/repos/{owner}/{repo}/issues/{issue_number}/comments`)
 - (In Review) Implement add comment endpoint (POST `/repos/{owner}/{repo}/issues/{issue_number}/comments`)
-- [ ] Implement list repository contents endpoint (GET `/repos/{owner}/{repo}/contents`)
-- [ ] Implement get file content endpoint (GET `/repos/{owner}/{repo}/contents/{path}`)
+- (In Review) Implement list repository contents endpoint (GET `/repos/{owner}/{repo}/contents`)
+- (In Review) Implement get file content endpoint (GET `/repos/{owner}/{repo}/contents/{path}`)
 
 ## Milestone: Quality & Security
 - [ ] Input/output validation from OpenAPI schema (request/response validation)
@@ -32,8 +33,8 @@ Legend
 - [x] Secrets management and configuration docs — see [.env.example](../.env.example) and [docs/AUTH.md](./AUTH.md)
 
 ## Milestone: Delivery
-- [ ] CI: lint/test/build Docker image
-- [ ] CD: publish image to registry
+- (In Progress) CI: lint/test/build Docker image — build & publish to GHCR is configured; lint/test pending
+- [ ] CD: publish image to registry (automations beyond build) — optional
 - [x] Usage docs and examples — see [README.md](../README.md)
 - [ ] Versioning and release notes
 
@@ -41,6 +42,4 @@ Legend
 1) Standardized error model and response normalization (map upstream errors)
 2) Rate limiting and retry/backoff handling
 3) Input/output validation driven by `openapi.yaml`
-4) Implement update/close issue and E2E tests
-5) Repository browsing endpoints: list contents and get file content
-6) Minimal request logging with request IDs
+4) Minimal request logging with request IDs
