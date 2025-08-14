@@ -1,0 +1,173 @@
+openapi: 3.0.3
+info:
+  title: GitHub Connector API
+  version: 0.1.0
+  description: REST bridge to list, get, create, update issues and manage comments via GitHub API
+servers:
+  - url: http://localhost:8080
+paths:
+  /repos/{owner}/{repo}/issues:
+    get:
+      summary: List issues
+      parameters:
+        - in: path
+          name: owner
+          required: true
+          schema: { type: string }
+        - in: path
+          name: repo
+          required: true
+          schema: { type: string }
+        - in: query
+          name: state
+          schema: { type: string, enum: [open, closed, all] }
+        - in: query
+          name: labels
+          schema: { type: string }
+        - in: query
+          name: assignee
+          schema: { type: string }
+        - in: query
+          name: creator
+          schema: { type: string }
+        - in: query
+          name: since
+          schema: { type: string, format: date-time }
+        - in: query
+          name: page
+          schema: { type: integer, minimum: 1 }
+        - in: query
+          name: per_page
+          schema: { type: integer, minimum: 1, maximum: 100 }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { type: object }
+    post:
+      summary: Create issue
+      parameters:
+        - in: path
+          name: owner
+          required: true
+          schema: { type: string }
+        - in: path
+          name: repo
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [title]
+              properties:
+                title: { type: string }
+                body: { type: string }
+                labels: { type: array, items: { type: string } }
+                assignees: { type: array, items: { type: string } }
+      responses:
+        '201': { description: Created }
+  /repos/{owner}/{repo}/issues/{issue_number}:
+    get:
+      summary: Get issue
+      parameters:
+        - in: path
+          name: owner
+          required: true
+          schema: { type: string }
+        - in: path
+          name: repo
+          required: true
+          schema: { type: string }
+        - in: path
+          name: issue_number
+          required: true
+          schema: { type: integer }
+      responses:
+        '200': { description: OK }
+    patch:
+      summary: Update issue
+      parameters:
+        - in: path
+          name: owner
+          required: true
+          schema: { type: string }
+        - in: path
+          name: repo
+          required: true
+          schema: { type: string }
+        - in: path
+          name: issue_number
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title: { type: string }
+                body: { type: string }
+                state: { type: string, enum: [open, closed] }
+                labels: { type: array, items: { type: string } }
+                assignees: { type: array, items: { type: string } }
+      responses:
+        '200': { description: OK }
+  /repos/{owner}/{repo}/issues/{issue_number}/comments:
+    get:
+      summary: List comments
+      parameters:
+        - in: path
+          name: owner
+          required: true
+          schema: { type: string }
+        - in: path
+          name: repo
+          required: true
+          schema: { type: string }
+        - in: path
+          name: issue_number
+          required: true
+          schema: { type: integer }
+        - in: query
+          name: page
+          schema: { type: integer, minimum: 1 }
+        - in: query
+          name: per_page
+          schema: { type: integer, minimum: 1, maximum: 100 }
+      responses:
+        '200': { description: OK }
+    post:
+      summary: Add comment
+      parameters:
+        - in: path
+          name: owner
+          required: true
+          schema: { type: string }
+        - in: path
+          name: repo
+          required: true
+          schema: { type: string }
+        - in: path
+          name: issue_number
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [body]
+              properties:
+                body: { type: string }
+      responses:
+        '201': { description: Created }
+components:
+  schemas: {}

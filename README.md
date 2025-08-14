@@ -15,8 +15,15 @@ See `docs/ARCHITECTURE.md` for details.
 ## Roadmap
 See `docs/ROADMAP.md` for the task breakdown managed via GitHub Issues and Project.
 
-## Quickstart (placeholder)
-- TBD: Image name, environment variables, and example `docker run` command.
+## Quickstart (PAT-based)
+1) Create a fine-grained PAT with access to your repo(s): Issues (Read & Write), Metadata (Read-only)
+2) Copy `.env.example` to `.env` and set:
+   - `GITHUB_TOKEN=<your-token>`
+   - `ALLOWLIST_REPOS=mGavryshchuk/GitHub_Connector`
+3) Run locally:
+   - Python: `pip install -r requirements.txt && uvicorn app.main:app --reload --port 8080`
+   - Docker: `docker build -t gh-connector:local . && docker run --rm -p 8080:8080 --env-file .env gh-connector:local`
+4) Open API docs: `http://localhost:8080/docs`
 
 ## License
 TBD (e.g., MIT)
