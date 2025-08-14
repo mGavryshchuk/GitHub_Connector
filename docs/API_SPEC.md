@@ -7,7 +7,7 @@ The formal specification will live in `openapi.yaml`. Below is the outline.
 
 ## Security Schemes
 - `githubApp` (HTTP bearer): Bearer token is a GitHub App installation token obtained via App JWT exchange
-- `pat` (HTTP token): Personal Access Token in `Authorization: token <PAT>`
+- `pat` (HTTP bearer): Fine-grained Personal Access Token in `Authorization: Bearer <PAT>`
 
 ## Required Headers (proxied)
 - `X-Request-ID` (optional): propagated to logs and responses
@@ -29,6 +29,17 @@ The formal specification will live in `openapi.yaml`. Below is the outline.
 - POST `/repos/{owner}/{repo}/issues/{issue_number}/comments`
   - Body: `body` (required)
   - Security: `githubApp` or `pat`
+
+### Repository browsing (read-only)
+- GET `/repos/{owner}/{repo}/contents`
+  - Query: `ref` (branch/tag/commit SHA, optional)
+  - Returns: array of items in root of the repo at `ref`
+  - Security: `Contents: Read`
+- GET `/repos/{owner}/{repo}/contents/{path}`
+  - Path: `path` to directory or file
+  - Query: `ref` (branch/tag/commit SHA, optional)
+  - Returns: directory listing or file descriptor with `content` base64-encoded
+  - Security: `Contents: Read`
 
 ## Error Model
 - Envelope: `{ code: string, message: string, details?: object, requestId?: string }`

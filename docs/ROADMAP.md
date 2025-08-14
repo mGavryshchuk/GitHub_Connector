@@ -15,12 +15,14 @@ Legend
 - [x] Dockerize the service with production-ready image — see [Dockerfile](../Dockerfile)
 
 ## Milestone: Core Features
-- [x] Implement list issues endpoint (GET `/repos/{owner}/{repo}/issues`) — E2E verified via local bridge
-- [x] Implement get single issue endpoint (GET `/repos/{owner}/{repo}/issues/{issue_number}`) — E2E verified
-- [x] Implement create issue endpoint (POST `/repos/{owner}/{repo}/issues`) — E2E verified
+- [x] Implement list issues endpoint (GET `/repos/{owner}/{repo}/issues`) — E2E verified
+- (In Review) Implement get single issue endpoint (GET `/repos/{owner}/{repo}/issues/{issue_number}`)
+- (In Review) Implement create issue endpoint (POST `/repos/{owner}/{repo}/issues`)
 - [ ] Implement update/close issue endpoint (PATCH `/repos/{owner}/{repo}/issues/{issue_number}`)
-- [x] Implement list comments endpoint (GET `/repos/{owner}/{repo}/issues/{issue_number}/comments`) — implemented; E2E test pending
-- [x] Implement add comment endpoint (POST `/repos/{owner}/{repo}/issues/{issue_number}/comments`) — E2E verified
+- (In Review) Implement list comments endpoint (GET `/repos/{owner}/{repo}/issues/{issue_number}/comments`)
+- (In Review) Implement add comment endpoint (POST `/repos/{owner}/{repo}/issues/{issue_number}/comments`)
+- [ ] Implement list repository contents endpoint (GET `/repos/{owner}/{repo}/contents`)
+- [ ] Implement get file content endpoint (GET `/repos/{owner}/{repo}/contents/{path}`)
 
 ## Milestone: Quality & Security
 - [ ] Input/output validation from OpenAPI schema (request/response validation)
@@ -40,5 +42,5 @@ Legend
 2) Rate limiting and retry/backoff handling
 3) Input/output validation driven by `openapi.yaml`
 4) Implement update/close issue and E2E tests
-5) E2E test for list comments
+5) Repository browsing endpoints: list contents and get file content
 6) Minimal request logging with request IDs

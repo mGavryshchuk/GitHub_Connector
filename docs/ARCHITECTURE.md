@@ -33,18 +33,11 @@ We support two strategies, selectable via environment variables:
     1) The service creates a short-lived App JWT using `GITHUB_APP_ID` and `GITHUB_APP_PRIVATE_KEY`.
     2) The service exchanges the JWT for an installation access token using `GITHUB_APP_INSTALLATION_ID`.
     3) All GitHub API calls include `Authorization: Bearer <installation_token>`.
-  - Required permissions for Issues CRUD and comments (repository-level):
-    - Issues: Read and write
-    - Metadata: Read-only
-  - No webhooks are strictly required for the current scope.
 
 - Personal Access Token (PAT) fallback
   - Why: Simplest for local bootstrap; fewer moving parts.
-  - Fine-grained PAT (preferred) permissions: select specific repository access with
-    - Issues: Read and write
-    - Metadata: Read-only
-  - Classic PAT alternative: `repo` scope (coarser; avoid in production).
-  - All GitHub API calls include `Authorization: token <GITHUB_TOKEN>`.
+  - Fine-grained PAT (preferred) permissions: select specific repository access with Issues (R/W), Contents (Read), Metadata (Read-only).
+  - All GitHub API calls include `Authorization: Bearer <GITHUB_TOKEN>`.
 
 Strategy selection
 - If `GITHUB_APP_ID` is set, the service uses GitHub App auth.
@@ -59,7 +52,6 @@ Strategy selection
   - Every endpoint carries `{owner}` and `{repo}` in the path.
   - A request is permitted only if `owner/repo` is in `ALLOWLIST_REPOS`, or `owner` is in `ALLOWLIST_OWNERS`.
   - Requests outside the allowlist return HTTP 403 with a clear error.
-- This satisfies the requirement to grant access per individual project/repository.
 
 ## Endpoints (initial scope)
 - Issues
@@ -70,6 +62,13 @@ Strategy selection
 - Comments
   - GET `/repos/{owner}/{repo}/issues/{issue_number}/comments`
   - POST `/repos/{owner}/{repo}/issues/{issue_number}/comments`
+
+## Endpoints (repository browsing)
+- Contents (read-only)
+  - GET `/repos/{owner}/{repo}/contents` — list items in repo root (or default branch)
+  - GET `/repos/{owner}/{repo}/contents/{path}` — list a directory or fetch a file (content is base64-encoded by GitHub)
+  - Optional: GET `/repos/{owner}/{repo}/git/trees/{sha}` with `?recursive=1` for bulk listings
+- Security: requires `Contents: Read` permission in the token/app and passes the same allowlist checks.
 
 Note: GitHub does not delete issues; closing is supported instead of deletion.
 
@@ -94,7 +93,7 @@ Note: GitHub does not delete issues; closing is supported instead of deletion.
 - GitHub App (recommended):
   - `GITHUB_APP_ID`
   - `GITHUB_APP_INSTALLATION_ID`
-  - `GITHUB_APP_PRIVATE_KEY` (PEM content or base64-encoded; exact format will be documented)
+  - `GITHUB_APP_PRIVATE_KEY_B64`
 - PAT fallback:
   - `GITHUB_TOKEN`
 - Scope control:
