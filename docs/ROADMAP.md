@@ -27,6 +27,7 @@ Legend
 
 ## Milestone: Quality & Security
 - [x] Fix OpenAPI servers configuration for dynamic URL support — see [issue #27](https://github.com/mGavryshchuk/GitHub_Connector/issues/27)
+- [x] Refactor API to use query parameters for agent compatibility — see [issue #28](https://github.com/mGavryshchuk/GitHub_Connector/issues/28)
 - [ ] Input/output validation from OpenAPI schema (request/response validation)
 - [ ] Error handling and standardized error responses (normalized envelope)
 - [ ] Rate limiting/backoff for GitHub API (decorrelated jitter, return 429 with Retry-After)
