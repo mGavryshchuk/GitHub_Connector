@@ -134,3 +134,37 @@ async def add_comment(
     if resp.status_code >= 400:
         raise HTTPException(status_code=resp.status_code, detail=resp.json())
     return resp.json()
+
+
+# Repository contents (read-only)
+@app.get('/repos/{owner}/{repo}/contents')
+async def list_repo_contents(
+    owner: str = Path(...),
+    repo: str = Path(...),
+    ref: Optional[str] = Query(None, description='Branch/tag/SHA'),
+):
+    ensure_allowed(owner, repo)
+    params: Dict[str, Any] = {}
+    if ref:
+        params['ref'] = ref
+    resp = await github_get(f'/repos/{owner}/{repo}/contents', params=params)
+    if resp.status_code >= 400:
+        raise HTTPException(status_code=resp.status_code, detail=resp.json())
+    return resp.json()
+
+
+@app.get('/repos/{owner}/{repo}/contents/{path:path}')
+async def get_repo_content(
+    owner: str = Path(...),
+    repo: str = Path(...),
+    path: str = Path(...),
+    ref: Optional[str] = Query(None, description='Branch/tag/SHA'),
+):
+    ensure_allowed(owner, repo)
+    params: Dict[str, Any] = {}
+    if ref:
+        params['ref'] = ref
+    resp = await github_get(f'/repos/{owner}/{repo}/contents/{path}', params=params)
+    if resp.status_code >= 400:
+        raise HTTPException(status_code=resp.status_code, detail=resp.json())
+    return resp.json()
