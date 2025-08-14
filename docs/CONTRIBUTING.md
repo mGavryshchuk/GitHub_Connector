@@ -12,7 +12,7 @@ This document defines how we collaborate on the GitHub Connector project.
 - Status flow: New → In Progress → In Review → Done (wait for review feedback before Done).
 - Options & decisions: When there are choices, propose 2–3 options with a clear recommendation and a brief “why”.
 - Requirements: Do not change requirements without prior approval.
-- Terminal commands: Before running any terminal command, include a short explanation of what it does.
+- Terminal commands: Before running any terminal command, include a short explanation in plain text (not inside the command itself). Keep commands short; avoid long chained commands.
 - New projects: If we are working on a new project, always ask whether to initialize a new GitHub repository/project before proceeding.
 
 ## Technical Defaults
