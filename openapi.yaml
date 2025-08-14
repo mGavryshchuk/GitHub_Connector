@@ -6,18 +6,20 @@ info:
 servers:
   - url: /
 paths:
-  /repos/{owner}/{repo}/issues:
+  /repos/issues:
     get:
       summary: List issues
       parameters:
-        - in: path
+        - in: query
           name: owner
           required: true
           schema: { type: string }
-        - in: path
+          description: Repository owner
+        - in: query
           name: repo
           required: true
           schema: { type: string }
+          description: Repository name
         - in: query
           name: state
           schema: { type: string, enum: [open, closed, all] }
@@ -50,14 +52,16 @@ paths:
     post:
       summary: Create issue
       parameters:
-        - in: path
+        - in: query
           name: owner
           required: true
           schema: { type: string }
-        - in: path
+          description: Repository owner
+        - in: query
           name: repo
           required: true
           schema: { type: string }
+          description: Repository name
       requestBody:
         required: true
         content:
@@ -72,18 +76,20 @@ paths:
                 assignees: { type: array, items: { type: string } }
       responses:
         '201': { description: Created }
-  /repos/{owner}/{repo}/issues/{issue_number}:
+  /repos/issues/{issue_number}:
     get:
       summary: Get issue
       parameters:
-        - in: path
+        - in: query
           name: owner
           required: true
           schema: { type: string }
-        - in: path
+          description: Repository owner
+        - in: query
           name: repo
           required: true
           schema: { type: string }
+          description: Repository name
         - in: path
           name: issue_number
           required: true
@@ -93,14 +99,16 @@ paths:
     patch:
       summary: Update issue
       parameters:
-        - in: path
+        - in: query
           name: owner
           required: true
           schema: { type: string }
-        - in: path
+          description: Repository owner
+        - in: query
           name: repo
           required: true
           schema: { type: string }
+          description: Repository name
         - in: path
           name: issue_number
           required: true
@@ -119,18 +127,20 @@ paths:
                 assignees: { type: array, items: { type: string } }
       responses:
         '200': { description: OK }
-  /repos/{owner}/{repo}/issues/{issue_number}/comments:
+  /repos/issues/{issue_number}/comments:
     get:
       summary: List comments
       parameters:
-        - in: path
+        - in: query
           name: owner
           required: true
           schema: { type: string }
-        - in: path
+          description: Repository owner
+        - in: query
           name: repo
           required: true
           schema: { type: string }
+          description: Repository name
         - in: path
           name: issue_number
           required: true
@@ -146,14 +156,16 @@ paths:
     post:
       summary: Add comment
       parameters:
-        - in: path
+        - in: query
           name: owner
           required: true
           schema: { type: string }
-        - in: path
+          description: Repository owner
+        - in: query
           name: repo
           required: true
           schema: { type: string }
+          description: Repository name
         - in: path
           name: issue_number
           required: true
@@ -169,42 +181,46 @@ paths:
                 body: { type: string }
       responses:
         '201': { description: Created }
-  /repos/{owner}/{repo}/contents:
+  /repos/contents:
     get:
       summary: List repository contents at root
       parameters:
-        - in: path
+        - in: query
           name: owner
           required: true
           schema: { type: string }
-        - in: path
+          description: Repository owner
+        - in: query
           name: repo
           required: true
           schema: { type: string }
+          description: Repository name
         - in: query
           name: ref
-          schema: { type: string, description: Branch/tag/SHA }
+          schema: { type: string, description: "Branch/tag/SHA" }
       responses:
         '200': { description: OK }
-  /repos/{owner}/{repo}/contents/{path}:
+  /repos/contents/{path}:
     get:
       summary: Get repository content (dir or file)
       parameters:
-        - in: path
+        - in: query
           name: owner
           required: true
           schema: { type: string }
-        - in: path
+          description: Repository owner
+        - in: query
           name: repo
           required: true
           schema: { type: string }
+          description: Repository name
         - in: path
           name: path
           required: true
           schema: { type: string }
         - in: query
           name: ref
-          schema: { type: string, description: Branch/tag/SHA }
+          schema: { type: string, description: "Branch/tag/SHA" }
       responses:
         '200': { description: OK }
 components:

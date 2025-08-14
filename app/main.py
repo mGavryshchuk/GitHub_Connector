@@ -56,10 +56,10 @@ def ensure_allowed(owner: str, repo: str) -> None:
         raise HTTPException(status_code=403, detail={'code': 'FORBIDDEN', 'message': 'Repository not allowed'})
 
 
-@app.get('/repos/{owner}/{repo}/issues')
+@app.get('/repos/issues')
 async def list_issues(
-    owner: str = Path(...),
-    repo: str = Path(...),
+    owner: str = Query(..., description="Repository owner"),
+    repo: str = Query(..., description="Repository name"),
     state: Optional[str] = Query(None),
     labels: Optional[str] = Query(None),
     assignee: Optional[str] = Query(None),
@@ -84,10 +84,10 @@ async def list_issues(
     return resp.json()
 
 
-@app.get('/repos/{owner}/{repo}/issues/{issue_number}')
+@app.get('/repos/issues/{issue_number}')
 async def get_issue(
-    owner: str = Path(...),
-    repo: str = Path(...),
+    owner: str = Query(..., description="Repository owner"),
+    repo: str = Query(..., description="Repository name"),
     issue_number: int = Path(...),
 ):
     ensure_allowed(owner, repo)
@@ -97,10 +97,10 @@ async def get_issue(
     return resp.json()
 
 
-@app.post('/repos/{owner}/{repo}/issues', status_code=201)
+@app.post('/repos/issues', status_code=201)
 async def create_issue(
-    owner: str = Path(...),
-    repo: str = Path(...),
+    owner: str = Query(..., description="Repository owner"),
+    repo: str = Query(..., description="Repository name"),
     body: CreateIssueRequest = ...,
 ):
     ensure_allowed(owner, repo)
@@ -111,10 +111,10 @@ async def create_issue(
     return resp.json()
 
 
-@app.patch('/repos/{owner}/{repo}/issues/{issue_number}')
+@app.patch('/repos/issues/{issue_number}')
 async def update_issue(
-    owner: str = Path(...),
-    repo: str = Path(...),
+    owner: str = Query(..., description="Repository owner"),
+    repo: str = Query(..., description="Repository name"),
     issue_number: int = Path(...),
     body: UpdateIssueRequest = ...,
 ):
@@ -126,10 +126,10 @@ async def update_issue(
     return resp.json()
 
 
-@app.get('/repos/{owner}/{repo}/issues/{issue_number}/comments')
+@app.get('/repos/issues/{issue_number}/comments')
 async def list_comments(
-    owner: str = Path(...),
-    repo: str = Path(...),
+    owner: str = Query(..., description="Repository owner"),
+    repo: str = Query(..., description="Repository name"),
     issue_number: int = Path(...),
     page: Optional[int] = Query(None, ge=1),
     per_page: Optional[int] = Query(None, ge=1, le=100),
@@ -144,10 +144,10 @@ async def list_comments(
     return resp.json()
 
 
-@app.post('/repos/{owner}/{repo}/issues/{issue_number}/comments', status_code=201)
+@app.post('/repos/issues/{issue_number}/comments', status_code=201)
 async def add_comment(
-    owner: str = Path(...),
-    repo: str = Path(...),
+    owner: str = Query(..., description="Repository owner"),
+    repo: str = Query(..., description="Repository name"),
     issue_number: int = Path(...),
     body: CreateCommentRequest = ...,
 ):
@@ -160,10 +160,10 @@ async def add_comment(
 
 
 # Repository contents (read-only)
-@app.get('/repos/{owner}/{repo}/contents')
+@app.get('/repos/contents')
 async def list_repo_contents(
-    owner: str = Path(...),
-    repo: str = Path(...),
+    owner: str = Query(..., description="Repository owner"),
+    repo: str = Query(..., description="Repository name"),
     ref: Optional[str] = Query(None, description='Branch/tag/SHA'),
 ):
     ensure_allowed(owner, repo)
@@ -176,10 +176,10 @@ async def list_repo_contents(
     return resp.json()
 
 
-@app.get('/repos/{owner}/{repo}/contents/{path:path}')
+@app.get('/repos/contents/{path:path}')
 async def get_repo_content(
-    owner: str = Path(...),
-    repo: str = Path(...),
+    owner: str = Query(..., description="Repository owner"),
+    repo: str = Query(..., description="Repository name"),
     path: str = Path(...),
     ref: Optional[str] = Query(None, description='Branch/tag/SHA'),
 ):
