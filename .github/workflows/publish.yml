@@ -7,7 +7,6 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ toLower(github.repository_owner) }}/github_connector
 
 jobs:
   build-and-push:
@@ -28,6 +27,11 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Compute image name (lowercase owner)
+        run: |
+          echo "IMAGE_OWNER=$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+          echo "IMAGE_NAME=${IMAGE_OWNER}/github_connector" >> $GITHUB_ENV
 
       - name: Build and push
         uses: docker/build-push-action@v6
