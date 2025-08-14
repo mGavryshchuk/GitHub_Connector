@@ -8,10 +8,20 @@ def _parse_csv(value: Optional[str]) -> Set[str]:
     return {item.strip() for item in value.split(',') if item.strip()}
 
 
+def _sanitize_token(value: Optional[str]) -> Optional[str]:
+    if value is None:
+        return None
+    v = value.strip()
+    # remove surrounding single or double quotes if present
+    if (v.startswith('"') and v.endswith('"')) or (v.startswith("'") and v.endswith("'")):
+        v = v[1:-1]
+    return v
+
+
 class Settings:
     def __init__(self) -> None:
         self.port: int = int(os.getenv('PORT', '8080'))
-        self.github_token: Optional[str] = os.getenv('GITHUB_TOKEN')
+        self.github_token: Optional[str] = _sanitize_token(os.getenv('GITHUB_TOKEN'))
         self.allowlist_repos: Set[str] = _parse_csv(os.getenv('ALLOWLIST_REPOS'))
         self.allowlist_owners: Set[str] = _parse_csv(os.getenv('ALLOWLIST_OWNERS'))
 

@@ -7,10 +7,11 @@ GITHUB_API_BASE_URL = 'https://api.github.com'
 
 
 def _auth_headers() -> Dict[str, str]:
-    # PAT authentication
+    # Fine-grained PATs should use Bearer scheme
     return {
-        'Authorization': f'token {settings.github_token}',
+        'Authorization': f'Bearer {settings.github_token}',
         'Accept': 'application/vnd.github+json',
+        'User-Agent': 'github-connector/0.1',
     }
 
 
