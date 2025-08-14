@@ -17,7 +17,6 @@ RUN useradd -u 10001 -m appuser
 COPY --from=builder /root/.local /usr/local
 COPY app ./app
 COPY openapi.yaml ./openapi.yaml
-COPY .env.example ./.env.example
 EXPOSE 8080
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s CMD wget -qO- http://localhost:8080/docs >/dev/null 2>&1 || exit 1
 USER appuser
