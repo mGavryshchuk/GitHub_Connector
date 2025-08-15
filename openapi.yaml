@@ -8,6 +8,7 @@ servers:
 paths:
   /repos/issues:
     get:
+      operationId: get_repos_issues
       summary: List issues
       parameters:
         - in: query
@@ -15,32 +16,41 @@ paths:
           required: true
           schema: { type: string }
           description: Repository owner
+          example: mGavryshchuk
         - in: query
           name: repo
           required: true
           schema: { type: string }
           description: Repository name
+          example: GitHub_Connector
         - in: query
           name: state
           schema: { type: string, enum: [open, closed, all] }
+          example: all
         - in: query
           name: labels
           schema: { type: string }
+          example: enhancement
         - in: query
           name: assignee
           schema: { type: string }
+          example: mGavryshchuk
         - in: query
           name: creator
           schema: { type: string }
+          example: mGavryshchuk
         - in: query
           name: since
           schema: { type: string, format: date-time }
+          example: "2024-01-01T00:00:00Z"
         - in: query
           name: page
           schema: { type: integer, minimum: 1 }
+          example: 1
         - in: query
           name: per_page
           schema: { type: integer, minimum: 1, maximum: 100 }
+          example: 30
       responses:
         '200':
           description: OK
@@ -50,6 +60,7 @@ paths:
                 type: array
                 items: { type: object }
     post:
+      operationId: post_repos_issues
       summary: Create issue
       parameters:
         - in: query
@@ -57,11 +68,13 @@ paths:
           required: true
           schema: { type: string }
           description: Repository owner
+          example: mGavryshchuk
         - in: query
           name: repo
           required: true
           schema: { type: string }
           description: Repository name
+          example: Voice-HA-Assistant
       requestBody:
         required: true
         content:
@@ -74,10 +87,16 @@ paths:
                 body: { type: string }
                 labels: { type: array, items: { type: string } }
                 assignees: { type: array, items: { type: string } }
+            example:
+              title: "New feature request"
+              body: "Please add support for..."
+              labels: ["enhancement"]
+              assignees: ["mGavryshchuk"]
       responses:
         '201': { description: Created }
   /repos/issues/{issue_number}:
     get:
+      operationId: get_repos_issues_issue_number
       summary: Get issue
       parameters:
         - in: query
@@ -85,18 +104,22 @@ paths:
           required: true
           schema: { type: string }
           description: Repository owner
+          example: mGavryshchuk
         - in: query
           name: repo
           required: true
           schema: { type: string }
           description: Repository name
+          example: GitHub_Connector
         - in: path
           name: issue_number
           required: true
           schema: { type: integer }
+          example: 27
       responses:
         '200': { description: OK }
     patch:
+      operationId: patch_repos_issues_issue_number
       summary: Update issue
       parameters:
         - in: query
@@ -104,15 +127,18 @@ paths:
           required: true
           schema: { type: string }
           description: Repository owner
+          example: mGavryshchuk
         - in: query
           name: repo
           required: true
           schema: { type: string }
           description: Repository name
+          example: Voice-HA-Assistant
         - in: path
           name: issue_number
           required: true
           schema: { type: integer }
+          example: 1
       requestBody:
         required: true
         content:
@@ -125,10 +151,15 @@ paths:
                 state: { type: string, enum: [open, closed] }
                 labels: { type: array, items: { type: string } }
                 assignees: { type: array, items: { type: string } }
+            example:
+              title: "Updated issue title"
+              state: "closed"
+              labels: ["bug", "fixed"]
       responses:
         '200': { description: OK }
   /repos/issues/{issue_number}/comments:
     get:
+      operationId: get_repos_issues_issue_number_comments
       summary: List comments
       parameters:
         - in: query
@@ -136,24 +167,30 @@ paths:
           required: true
           schema: { type: string }
           description: Repository owner
+          example: mGavryshchuk
         - in: query
           name: repo
           required: true
           schema: { type: string }
           description: Repository name
+          example: GitHub_Connector
         - in: path
           name: issue_number
           required: true
           schema: { type: integer }
+          example: 27
         - in: query
           name: page
           schema: { type: integer, minimum: 1 }
+          example: 1
         - in: query
           name: per_page
           schema: { type: integer, minimum: 1, maximum: 100 }
+          example: 30
       responses:
         '200': { description: OK }
     post:
+      operationId: post_repos_issues_issue_number_comments
       summary: Add comment
       parameters:
         - in: query
@@ -161,15 +198,18 @@ paths:
           required: true
           schema: { type: string }
           description: Repository owner
+          example: mGavryshchuk
         - in: query
           name: repo
           required: true
           schema: { type: string }
           description: Repository name
+          example: Voice-HA-Assistant
         - in: path
           name: issue_number
           required: true
           schema: { type: integer }
+          example: 1
       requestBody:
         required: true
         content:
@@ -179,10 +219,13 @@ paths:
               required: [body]
               properties:
                 body: { type: string }
+            example:
+              body: "This is a comment on the issue"
       responses:
         '201': { description: Created }
   /repos/contents:
     get:
+      operationId: get_repos_contents
       summary: List repository contents at root
       parameters:
         - in: query
@@ -190,18 +233,22 @@ paths:
           required: true
           schema: { type: string }
           description: Repository owner
+          example: mGavryshchuk
         - in: query
           name: repo
           required: true
           schema: { type: string }
           description: Repository name
+          example: GitHub_Connector
         - in: query
           name: ref
           schema: { type: string, description: "Branch/tag/SHA" }
+          example: main
       responses:
         '200': { description: OK }
   /repos/contents/{path}:
     get:
+      operationId: get_repos_contents_path
       summary: Get repository content (dir or file)
       parameters:
         - in: query
@@ -209,18 +256,22 @@ paths:
           required: true
           schema: { type: string }
           description: Repository owner
+          example: mGavryshchuk
         - in: query
           name: repo
           required: true
           schema: { type: string }
           description: Repository name
+          example: Voice-HA-Assistant
         - in: path
           name: path
           required: true
           schema: { type: string }
+          example: README.md
         - in: query
           name: ref
           schema: { type: string, description: "Branch/tag/SHA" }
+          example: main
       responses:
         '200': { description: OK }
 components:
